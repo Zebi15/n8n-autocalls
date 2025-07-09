@@ -1,48 +1,125 @@
-![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
+# n8n-nodes-autocalls
 
-# n8n-nodes-starter
+This is an n8n community node. It lets you use Autocalls in your n8n workflows.
 
-This repo contains example nodes to help you get started building your own custom integrations for [n8n](https://n8n.io). It includes the node linter and other dependencies.
+Autocalls is an AI-powered calling platform that enables you to automate phone calls using intelligent virtual assistants.
 
-To make your custom node available to the community, you must create it as an npm package, and [submit it to the npm registry](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
+[n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
 
-If you would like your node to be available on n8n cloud you can also [submit your node for verification](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/).
+[Installation](#installation)  
+[Operations](#operations)  
+[Credentials](#credentials)  
+[Compatibility](#compatibility)  
+[Usage](#usage)  
+[Resources](#resources)  
 
-## Prerequisites
+## Installation
 
-You need the following installed on your development machine:
+Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community nodes documentation.
 
-* [git](https://git-scm.com/downloads)
-* Node.js and npm. Minimum version Node 20. You can find instructions on how to install both using nvm (Node Version Manager) for Linux, Mac, and WSL [here](https://github.com/nvm-sh/nvm). For Windows users, refer to Microsoft's guide to [Install NodeJS on Windows](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-windows).
-* Install n8n with:
-  ```
-  npm install n8n -g
-  ```
-* Recommended: follow n8n's guide to [set up your development environment](https://docs.n8n.io/integrations/creating-nodes/build/node-development-environment/).
+## Operations
 
-## Using this starter
+This package provides the Autocalls node with a unified interface for both actions and triggers:
 
-These are the basic steps for working with the starter. For detailed guidance on creating and publishing nodes, refer to the [documentation](https://docs.n8n.io/integrations/creating-nodes/).
+### Autocalls Node
 
-1. [Generate a new repository](https://github.com/n8n-io/n8n-nodes-starter/generate) from this template repository.
-2. Clone your new repo:
-   ```
-   git clone https://github.com/<your organization>/<your-repo-name>.git
-   ```
-3. Run `npm i` to install dependencies.
-4. Open the project in your editor.
-5. Browse the examples in `/nodes` and `/credentials`. Modify the examples, or replace them with your own nodes.
-6. Update the `package.json` to match your details.
-7. Run `npm run lint` to check for errors or `npm run lintfix` to automatically fix errors when possible.
-8. Test your node locally. Refer to [Run your node locally](https://docs.n8n.io/integrations/creating-nodes/test/run-node-locally/) for guidance.
-9. Replace this README with documentation for your node. Use the [README_TEMPLATE](README_TEMPLATE.md) to get started.
-10. Update the LICENSE file to use your details.
-11. [Publish](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry) your package to npm.
+When you add the **Autocalls** node to your workflow, n8n will present you with a submenu to choose between:
 
-## More information
+#### Actions (Regular Node)
+- **Call**: Make phone calls using AI assistants
+  - **Make**: Initiate phone calls using AI assistants
+    - Select an assistant from your Autocalls account (outbound assistants only)
+    - Specify the phone number to call
+    - Add variables with name/value pairs to customize the conversation
 
-Refer to our [documentation on creating nodes](https://docs.n8n.io/integrations/creating-nodes/) for detailed information on building your own nodes.
+- **Assistant**: Manage assistants
+  - **Get Assistants**: Retrieve assistants from your Autocalls account
+    - Fetches all assistants from your account
+    - Returns each assistant as a separate item with details like name, ID, status, etc.
+    - Regular action that can be used in any workflow
 
-## License
+#### Triggers (Trigger Node)
+- **Call**: Monitor phone call events
+  - **Call Ended**: Receive notifications when phone calls end
+    - Select an assistant to monitor
+    - Receives call details including duration, status, and transcript
+    - Gets extracted variables from the conversation
+    - Provides input variables that were used
+    - Real-time webhook notifications
 
-[MIT](https://github.com/n8n-io/n8n-nodes-starter/blob/master/LICENSE.md)
+## Credentials
+
+To use this node, you need to set up Autocalls API credentials:
+
+1. Sign up for an account at [Autocalls](https://app.autocalls.ai/)
+2. Generate an API key from your account settings
+3. In n8n, create new credentials of type "Autocalls API"
+4. Enter your API key
+
+The credentials are automatically validated when you save them.
+
+## Compatibility
+
+- Minimum n8n version: 0.36.1
+- Tested with n8n version: 1.0.0+
+
+## Usage
+
+### Adding the Autocalls Node
+
+1. Add the **Autocalls** node to your workflow
+2. n8n will present you with a submenu to choose between **Action** and **Trigger**
+3. Select the type you need:
+   - **Action**: For making phone calls (requires input connection)
+   - **Trigger**: For receiving events or fetching data (no input connection needed)
+
+### Using Actions
+
+#### Making Phone Calls
+
+1. Choose **Action** from the submenu
+2. Select **Resource**: Call, **Operation**: Make
+3. Choose an outbound assistant from the dropdown (assistants are loaded from your Autocalls account)
+4. Enter the phone number to call
+5. Add variables using the name/value interface to personalize the conversation (e.g., Name: "customer_name", Value: "John")
+
+#### Getting Assistants
+
+1. Choose **Action** from the submenu
+2. Select **Resource**: Assistant, **Operation**: Get Assistants
+3. The action will fetch all assistants from your account
+4. Each assistant will be returned as a separate item with details like name, ID, status, etc.
+5. Can be used like any regular action in your workflows
+
+### Using Triggers
+
+The **Autocalls Call Ended Trigger** receives webhook notifications when phone calls are completed. This trigger provides real-time data about call outcomes, extracted variables, and conversation transcripts.
+
+#### What Data You Receive
+
+When a call ends, the trigger receives a webhook with the following information:
+
+- **Call Details**: ID, duration, status
+- **Phone Numbers**: Customer and assistant phone numbers
+- **Extracted Variables**: AI-extracted data from the conversation
+- **Input Variables**: Variables passed to the assistant before the call
+- **Transcript**: Full conversation transcript
+- **Recording URL**: Link to call recording (if enabled)
+- **Timestamps**: When the call started and ended
+- **Lead Information**: Lead and campaign details (for campaign calls)
+
+#### Setting Up the Trigger
+
+1. Choose **Trigger** from the submenu
+2. Select an assistant to monitor from the dropdown
+3. The trigger will automatically generate a webhook URL
+4. **Important**: You must manually register this webhook URL in your Autocalls assistant settings
+5. Go to your assistant settings in Autocalls dashboard
+6. Add the webhook URL ,enable webhook status and save the configuration
+
+## Resources
+
+* [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
+* [Autocalls Documentation](https://docs.autocalls.ai/)
+* [Autocalls API Reference](https://docs.autocalls.ai/api-reference/)
+* [Autocalls Platform](https://app.autocalls.ai/)

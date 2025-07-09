@@ -1,19 +1,25 @@
 {
-  "name": "n8n-nodes-<...>",
-  "version": "0.1.0",
-  "description": "",
+  "name": "n8n-nodes-autocalls",
+  "version": "1.0.0",
+  "description": "n8n community node for Autocalls - Automate phone calls using AI calling platform",
   "keywords": [
-    "n8n-community-node-package"
+    "n8n-community-node-package",
+    "autocalls",
+    "ai",
+    "phone",
+    "calls",
+    "automation",
+    "ai phone calling"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://autocalls.ai/",
   "author": {
-    "name": "",
-    "email": ""
+    "name": "Zebi15",
+    "email": "eusebiuapostol@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<...>/n8n-nodes-<...>.git"
+    "url": "https://github.com/Zebi15/n8n-autocalls.git"
   },
   "engines": {
     "node": ">=20.15"
@@ -31,16 +37,15 @@
     "dist"
   ],
   "n8n": {
-    "n8nNodesApiVersion": 1,
-    "credentials": [
-      "dist/credentials/ExampleCredentialsApi.credentials.js",
-      "dist/credentials/HttpBinApi.credentials.js"
-    ],
-    "nodes": [
-      "dist/nodes/ExampleNode/ExampleNode.node.js",
-      "dist/nodes/HttpBin/HttpBin.node.js"
-    ]
-  },
+		"n8nNodesApiVersion": 1,
+		"credentials": [
+			"dist/credentials/AutocallsApi.credentials.js"
+		],
+		"nodes": [
+			"dist/nodes/Autocalls/Autocalls.node.js",
+			"dist/nodes/Autocalls/AutocallsTrigger.node.js"
+		]
+	},
   "devDependencies": {
     "@typescript-eslint/parser": "~8.32.0",
     "eslint": "^8.57.0",
